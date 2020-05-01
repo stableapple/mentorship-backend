@@ -54,7 +54,7 @@ class MentorshipRelationDAO:
         except ValueError:
             return messages.INVALID_END_DATE, HTTPStatus.BAD_REQUEST
 
-        now_datetime = datetime.now()
+        now_datetime = datetime.utcnow()
         if end_date_datetime < now_datetime:
             return messages.END_TIME_BEFORE_PRESENT, HTTPStatus.BAD_REQUEST
 
@@ -110,7 +110,7 @@ class MentorshipRelationDAO:
             action_user_id=action_user_id,
             mentor_user=mentor_user,
             mentee_user=mentee_user,
-            creation_date=datetime.now().timestamp(),
+            creation_date=datetime.utcnow().timestamp(),
             end_date=end_date_timestamp,
             state=MentorshipRelationState.PENDING,
             notes=notes,
@@ -178,7 +178,10 @@ class MentorshipRelationDAO:
 
         # verify if request exists
         if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
@@ -190,14 +193,20 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.BAD_REQUEST
+            return (
+                messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION,
+                HTTPStatus.BAD_REQUEST,
+            )
 
         my_requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for my_request in my_requests:
             if my_request.state == MentorshipRelationState.ACCEPTED:
-                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.BAD_REQUEST
+                return (
+                    messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION,
+                    HTTPStatus.BAD_REQUEST,
+                )
 
         mentee = request.mentee
         mentor = request.mentor
@@ -241,7 +250,10 @@ class MentorshipRelationDAO:
 
         # verify if request exists
         if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
@@ -249,11 +261,17 @@ class MentorshipRelationDAO:
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.BAD_REQUEST
+            return (
+                messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER,
+                HTTPStatus.BAD_REQUEST,
+            )
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.BAD_REQUEST
+            return (
+                messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST,
+                HTTPStatus.BAD_REQUEST,
+            )
 
         # All was checked
         request.state = MentorshipRelationState.REJECTED
@@ -279,7 +297,10 @@ class MentorshipRelationDAO:
 
         # verify if request exists
         if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.ACCEPTED:
@@ -315,7 +336,10 @@ class MentorshipRelationDAO:
 
         # verify if request exists
         if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
@@ -343,7 +367,7 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         past_relations = list(
             filter(
                 lambda relation: relation.end_date < now_timestamp,
@@ -391,7 +415,7 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         pending_requests = []
         all_relations = user.mentor_relations + user.mentee_relations
 
