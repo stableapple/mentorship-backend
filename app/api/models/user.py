@@ -47,7 +47,7 @@ public_user_api_model = Model(
         "bio": fields.String(required=True, description="User bio"),
         "location": fields.String(required=True, description="User location"),
         "occupation": fields.String(required=True, description="User occupation"),
-        "organization": fields.String(required=True, description="User organization"),
+        "current_organization": fields.String(required=True, description="User current_organization"),
         "interests": fields.String(required=True, description="User interests"),
         "skills": fields.String(required=True, description="User skills"),
         "need_mentoring": fields.Boolean(
@@ -89,7 +89,7 @@ full_user_api_model = Model(
         "bio": fields.String(required=False, description="User bio"),
         "location": fields.String(required=False, description="User location"),
         "occupation": fields.String(required=False, description="User occupation"),
-        "organization": fields.String(required=False, description="User organization"),
+        "current_organization": fields.String(required=False, description="User current_organization"),
         "slack_username": fields.String(
             required=False, description="User slack username"
         ),
@@ -157,9 +157,6 @@ login_response_body_model = Model(
     "Login response data model",
     {
         "access_token": fields.String(required=True, description="User's access token"),
-        "expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
-        ),
         "access_expiry": fields.Float(
             required=True, description="Access token expiry UNIX timestamp"
         ),
@@ -190,7 +187,7 @@ update_user_request_body_model = Model(
         "bio": fields.String(required=False, description="User bio"),
         "location": fields.String(required=False, description="User location"),
         "occupation": fields.String(required=False, description="User occupation"),
-        "organization": fields.String(required=False, description="User organization"),
+        "current_organization": fields.String(required=False, description="User current_organization"),
         "slack_username": fields.String(
             required=False, description="User slack username"
         ),

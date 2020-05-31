@@ -106,7 +106,9 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
+    # Using elephantsql - BridgeInTech remote db on heroku
+    # https://bridge-in-tech-ms-test.herokuapp.com
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DB_REMOTE_URL')
 
 
 class StagingConfig(BaseConfig):
@@ -121,9 +123,9 @@ class LocalConfig(BaseConfig):
 
     DEBUG = True
 
-    # Using a local sqlite database
-    SQLALCHEMY_DATABASE_URI = "sqlite:///local_data.db"
-
+    # Using a local postgre database
+    SQLALCHEMY_DATABASE_URI = "postgresql:///bit_schema"
+    # SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
@@ -132,7 +134,7 @@ class TestingConfig(BaseConfig):
     MOCK_EMAIL = True
 
     # Use in-memory SQLite database for testing
-    SQLALCHEMY_DATABASE_URI = "sqlite://"
+    SQLALCHEMY_DATABASE_URI = "postgresql:///bit_schema_test"
 
 
 def get_env_config() -> str:

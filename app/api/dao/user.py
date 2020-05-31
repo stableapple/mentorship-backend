@@ -52,11 +52,17 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
+            return (
+                messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                HTTPStatus.CONFLICT,
+            )
         else:
             existing_user = UserModel.find_by_email(data["email"])
             if existing_user:
-                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
+                return (
+                    messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+                    HTTPStatus.CONFLICT,
+                )
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
@@ -148,7 +154,13 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified = None):
+    def list_users(
+        user_id: int,
+        search_query: str = "",
+        page: int = DEFAULT_PAGE,
+        per_page: int = DEFAULT_USERS_PER_PAGE,
+        is_verified=None,
+    ):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -163,19 +175,23 @@ class UserDAO:
         
         """
 
-        users_list = UserModel.query.filter(
-            UserModel.id != user_id,
-            not is_verified or UserModel.is_email_verified,
-            func.lower(UserModel.name).contains(search_query.lower())
-        ).order_by(UserModel.id).paginate(page=page,
-                                          per_page=per_page,
-                                          error_out=False,
-                                          max_per_page=UserDAO.MAX_USERS_PER_PAGE).items
+        users_list = (
+            UserModel.query.filter(
+                UserModel.id != user_id,
+                not is_verified or UserModel.is_email_verified,
+                func.lower(UserModel.name).contains(search_query.lower()),
+            )
+            .order_by(UserModel.id)
+            .paginate(
+                page=page,
+                per_page=per_page,
+                error_out=False,
+                max_per_page=UserDAO.MAX_USERS_PER_PAGE,
+            )
+            .items
+        )
 
-        list_of_users = [
-            user.json()
-            for user in users_list
-        ]
+        list_of_users = [user.json() for user in users_list]
 
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
@@ -219,7 +235,10 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return (
+                    messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                    HTTPStatus.BAD_REQUEST,
+                )
 
             user.username = username
 
@@ -244,11 +263,11 @@ class UserDAO:
             else:
                 user.occupation = None
 
-        if "organization" in data:
-            if data["organization"]:
-                user.organization = data["organization"]
+        if "current_organization" in data:
+            if data["current_organization"]:
+                user.current_organization = data["current_organization"]
             else:
-                user.organization = None
+                user.current_organization = None
 
         if "slack_username" in data:
             if data["slack_username"]:
@@ -646,7 +665,10 @@ class UserDAO:
             user_id=user_id
         )
 
-        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK):
+        if current_relation != (
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
+        ):
             response["tasks_todo"] = marshal(
                 [
                     task

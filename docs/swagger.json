@@ -742,14 +742,14 @@
                         "in": "query",
                         "type": "int",
                         "required": false,
-                        "description": "specify page of users",
+                        "description": "specify page of users"
                     },
                     {
                         "name": "per_page",
                         "in": "query",
                         "type": "int",
                         "required": false,
-                        "description": "specify number of users per page",
+                        "description": "specify number of users per page"
                     },
                     {
                         "name": "X-Fields",
@@ -792,14 +792,14 @@
                         "in": "query",
                         "type": "int",
                         "required": false,
-                        "description": "specify page of users",
+                        "description": "specify page of users"
                     },
                     {
                         "name": "per_page",
                         "in": "query",
                         "type": "int",
                         "required": false,
-                        "description": "specify number of users per page",
+                        "description": "specify number of users per page"
                     },
                     {
                         "name": "X-Fields",
@@ -895,7 +895,7 @@
                 "name",
                 "need_mentoring",
                 "occupation",
-                "organization",
+                "current_organization",
                 "skills",
                 "slack_username",
                 "username"
@@ -929,9 +929,9 @@
                     "type": "string",
                     "description": "User occupation"
                 },
-                "organization": {
+                "current_organization": {
                     "type": "string",
-                    "description": "User organization"
+                    "description": "User current_organization"
                 },
                 "interests": {
                     "type": "string",
@@ -974,9 +974,9 @@
                     "type": "string",
                     "description": "User occupation"
                 },
-                "organization": {
+                "current_organization": {
                     "type": "string",
-                    "description": "User organization"
+                    "description": "User current_organization"
                 },
                 "slack_username": {
                     "type": "string",
@@ -1078,9 +1078,9 @@
                     "type": "string",
                     "description": "User occupation"
                 },
-                "organization": {
+                "current_organization": {
                     "type": "string",
-                    "description": "User organization"
+                    "description": "User current_organization"
                 },
                 "slack_username": {
                     "type": "string",
