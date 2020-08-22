@@ -18,7 +18,7 @@ def create_app(config_filename: str) -> Flask:
 
     migrate = Migrate(app, db)
 
-    cors.init_app(app, resources={r"*": {"origins": "https://bridgeintech-bit-heroku-psql.herokuapp.com"}})
+    cors.init_app(app, resources={r"*": {"origins": "https://bit-test-pr.herokuapp.com/"}})
     
     from app.api.jwt_extension import jwt
 
