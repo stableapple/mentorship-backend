@@ -53,9 +53,10 @@ jobs:
       run: |
         python -m unittest discover tests -v
       env:
-        DB_TYPE: postgres
-        DB_USER: localhost
-        DB_PASSWORD: postgres 
+        DB_TYPE: postgresql
+        DB_USERNAME: postgres
+        DB_PASSWORD: postgres
+        DB_ENDPOINT: localhost:5432 
         DB_TEST_NAME: bit_schema_test
         
     - name: Generate coverage report

@@ -142,12 +142,12 @@ class TestingConfig(BaseConfig):
     # SQLALCHEMY_DATABASE_URI = "postgresql:///bit_schema_test"
 
     # Using a local postgre database on other OS
-    # SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_test_uri()
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_test_uri()
 
-    # uncomment when pushing to upstream for Github action to Run test
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://postgres:postgres@localhost:5432/bit_schema_test"
-    )
+    # # uncomment when pushing to upstream for Github action to Run test
+    # SQLALCHEMY_DATABASE_URI = (
+    #     "postgresql://postgres:postgres@localhost:5432/bit_schema_test"
+    # )
 
 
 def get_env_config() -> str:
